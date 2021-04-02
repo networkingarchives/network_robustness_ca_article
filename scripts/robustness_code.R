@@ -9,12 +9,6 @@ library(snakecase)
 library(lubridate)
 library(furrr)
 
-# Load the three datasets:
-
-load('spo_network')
-load('emlo_network')
-load('bcc_network')
-
 # Function to generate all metrics when passed a dataframe
 
 calculate_metrics = function(.data){
@@ -117,12 +111,8 @@ robustness_test = function(network, nsim = 1){
   
 }
 
-# Run the 'robustness_test function on each dataset. Takes the dataset as an argument, 
-# and nsim, which is the number of times to run
 
-emlo_results = robustness_test(emlo_network, nsim = 1)  
-spo_results = robustness_test(spo_network, nsim = 1)
-bcc_results = robustness_test(bcc_network, nsim = 1)  
+
 
 # A separate function to test the robustness of node deletion:
 

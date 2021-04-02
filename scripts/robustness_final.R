@@ -1,4 +1,13 @@
-# Generate main results for each dataset. Takes several hours, or overnight in the case of the SPO dataset. 
+# Load the three datasets created in robustness.data.R:
+
+load('data/spo_network')
+load('data/emlo_network')
+load('data/bcc_network')
+
+# Run the 'robustness_test function on each dataset. Takes the dataset as an argument, 
+# and nsim, which is the number of times to run
+
+# Takes several hours, or overnight in the case of the SPO dataset. 
 
 emlo_results = robustness_test(emlo_network, nsim = 40)  
 spo_results = robustness_test(spo_network, nsim = 40)
@@ -30,5 +39,5 @@ new_results = rbind(spo_results %>%
 
 # Save the file as an R data file:
 
-save(new_results, file = 'new_results_2')
+save(new_results, file = 'data/robustness_results')
 

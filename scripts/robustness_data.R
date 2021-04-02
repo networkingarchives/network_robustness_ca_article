@@ -23,14 +23,14 @@ spo_network = spo_raw %>%
 
 # Make EMLO network. First load full data to extract catalogue info:
 
-work <- read_csv("/Users/Yann/Documents/MOST RECENT DATA/EMLO/work.csv", col_types = cols(.default = "c"))
+work <- read_csv("work.csv", col_types = cols(.default = "c"))
 colnames(work) = to_snake_case(colnames(work))
 
 # Load edge list
 
-emlo_raw = read_delim('/Users/Yann/Documents/MOST RECENT DATA/EMLO/emlo_full_network.dat', delim = '\t', col_names = F)
+emlo_raw = read_delim('emlo_full_network.dat', delim = '\t', col_names = F)
 
-# Load a list of letters to remove (duplicates and some unknowns)
+# Load a list of letters to remove (duplicates and some unknowns) from Github repository:
 
 to_remove = read_csv('https://raw.githubusercontent.com/networkingarchives/de-duplications/master/to_remove_list_with_unknown.csv')
 
@@ -48,7 +48,7 @@ emlo_network = emlo_raw %>%
 
 # Load shelfmark info to join to BCC data:
 
-shelfmarks = read_delim('/Users/Yann/Documents/MOST RECENT DATA/shelfmarks.txt', delim = '\t')
+shelfmarks = read_delim('shelfmarks.txt', delim = '\t')
 
 colnames(shelfmarks) = to_snake_case(colnames(shelfmarks))
 folio_section = shelfmarks %>% filter(str_detect(shelfmark_and_pagination, "fol"))
@@ -126,6 +126,6 @@ bcc_network = bcc_network %>%
   left_join(bcc_node_ids, by = c('X2' = 'name')) %>% 
   select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id, folio_or_catalogue)
 
-save(spo_network, file = 'spo_network')
-save(emlo_network, file = 'emlo_network')
-save(bcc_network, file = 'bcc_network')
+save(spo_network, file = 'data/spo_network')
+save(emlo_network, file = 'data/emlo_network')
+save(bcc_network, file = 'data/bcc_network')
