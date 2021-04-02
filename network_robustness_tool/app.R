@@ -9,11 +9,8 @@ library(reader)
 options(shiny.maxRequestSize = 30*1024^2)
 
 library(dplyr, warn.conflicts = FALSE)
-library(tidyverse)
 library(tidygraph)
-library(igraph)
 library(data.table)
-library(ggraph)
 library(snakecase)
 library(lubridate)
 library(furrr)
@@ -106,7 +103,7 @@ ui <- fluidPage(
         sidebarPanel(p("Upload an edge list (TSV or CSV) to calculate robustness scores."),p("This version is limited to 1000 edges and 20 runs to save on Shiny runtime. Download here and run locally in R to remove this restriction."), p("Edge list should have at least two columns, headed 'from' and 'to'. Additional columns (such as year or source) will be sampled separately and added to the plot."), p("The algorithm removes progressively larger random samples of edges and compares the full ranked metric those calculated using the partial network. All calculations are on an unweighted, directed network"),
             fileInput("file1", "Upload edge list"),
             actionButton('generate', 'Calculate Robustness'),
-            selectInput('sims', 'Number of simulations', choices = 1:20)
+            selectInput('sims', 'Number of simulations', choices = 1:20) # change choices here to allow more runs
         ),
         
         
@@ -128,7 +125,8 @@ server <- function(input, output, session) {
         likely_delim = get.delim(file$datapath, n = 20, delims = c(',', '\t'))
         a = read_delim(file$datapath, delim = likely_delim, col_names = T) %>% 
             filter(!is.na(.[1])) %>%
-            filter(!is.na(.[2])) %>% mutate(edge_id = 1:nrow(.)) %>% slice(1:1000)
+            filter(!is.na(.[2])) %>% mutate(edge_id = 1:nrow(.)) %>% 
+            slice(1:1000) # Remove this slice function to lift limit of 1000 edges
         
         
         a   
