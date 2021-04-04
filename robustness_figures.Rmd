@@ -1,5 +1,5 @@
 ---
-title: 'Figures for Network Robustness Article published in Cultural Analytics'
+title: "Figures for Network Robustness Article published in Cultural Analytics"
 ---
 
 
@@ -504,7 +504,7 @@ p+ theme(text = element_text(family = 'Times'))
 
 library(cowplot)
 set.seed(1234)
-spo_raw = read_delim('fromto_all_place_mapped_stuart_sorted', delim = '\t', col_names = F)
+spo_raw = read_delim('../../../Documents/MOST RECENT DATA/fromto_all_place_mapped_stuart_sorted', delim = '\t', col_names = F)
 network_filtered = spo_raw %>% 
   dplyr::select(X1, X2, X3, X8) %>% 
   mutate(X8 = str_remove(X8, "\\sf\\.[0-9]{1,}")) %>% 
@@ -605,18 +605,6 @@ plot_grid(a,b,c,d, labels = c('a', 'b', 'c', 'd'),label_fontface = "bold", label
 
 
 ```
-
-## Shiny Application   
-
-
-```{r screenshot, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Screenshot of Network Robustness Application, made with Shiny", fig.height=4, fig.width=4.5}
-library(png)
-library(grid)
-img <- readPNG("Screenshot 2021-03-23 at 17.50.43.png")
- grid.raster(img)
-```
-
-
 
 
 # Appendix:
