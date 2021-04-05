@@ -20,4 +20,4 @@ robustness_figures.Rmd contains the R markdown for code to generate all figures 
 
 The data folder contains both the scrambled edge lists necessary to produce the outputs and these can be re-run, though note that running the code across all datasets may take several days. 
 
-We include the outputs we generated from the scripts necessary to re-create the figures. A random seed was not set in the original run, and as it uses random sampling, it is expected that a slightly different of results will be generated each time, though the overall pattern should remain the same.  
+We include the outputs we generated from the scripts necessary to re-create the figures. A seed was not set in the original run, and as it uses random sampling, it is expected that a slightly different of results will be generated each time, though the overall pattern should remain the same.  
