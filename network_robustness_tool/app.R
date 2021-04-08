@@ -125,8 +125,9 @@ server <- function(input, output, session) {
         likely_delim = get.delim(file$datapath, n = 20, delims = c(',', '\t'))
         a = read_delim(file$datapath, delim = likely_delim, col_names = T) %>% 
             filter(!is.na(.[1])) %>%
-            filter(!is.na(.[2])) %>% mutate(edge_id = 1:nrow(.)) %>% 
-            slice(1:1000) # Remove this slice function to lift limit of 1000 edges
+            filter(!is.na(.[2])) %>% mutate(edge_id = 1:nrow(.)) 
+        #%>% 
+            #slice(1:1000) # Remove this slice function to lift limit of 1000 edges
         
         
         a   

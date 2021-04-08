@@ -9,6 +9,7 @@ library(snakecase)
 library(lubridate)
 library(furrr)
 
+
 # Function to generate all metrics when passed a dataframe
 
 calculate_metrics = function(.data){
@@ -188,29 +189,4 @@ robustness_test_nodes = function(network, nsim = 1){
   
 }
 
-# Again run a similar function: 
 
-bcc_nodes = robustness_test_nodes(bcc_network, nsim = 1)
-spo_nodes = robustness_test_nodes(spo_network, nsim = 1)
-emlo_nodes = robustness_test_nodes(emlo_network, nsim = 1)
-
-# Merge all the results together and save as an R data file:
-
-new_results = rbind(spo_results %>% 
-        mutate(dataset = 'spo'), 
-      emlo_results %>% 
-        mutate(dataset = 'emlo'), 
-      bcc_results %>% 
-        mutate(dataset = 'bcc'), 
-      spo_nodes %>% 
-        mutate(type = 'nodes') %>% 
-        mutate(dataset = 'spo'), 
-      emlo_nodes %>% 
-        mutate(type = 'nodes')%>% 
-        mutate(dataset = 'emlo'), 
-      bcc_nodes %>% 
-        mutate(type = 'nodes')%>% 
-        mutate(dataset = 'bcc')) %>% filter(!is.na(run))
-
-
-save(new_results, file = 'new_results')
