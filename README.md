@@ -45,4 +45,5 @@ We include the outputs we generated from the scripts necessary to re-create the 
 
 * If you want to re-generate the results, open the scripts folder, and then the file 'robustness_code.R. If you click on 'Source' in the top right of this document, it'll run **all** the code in the script, and make the necessary functions available. Next, open 'robustness_final.R' and again click 'Source'. This will run the data through the necessary functions and generate all the robustness results, and merge them into a single file. This will take a long time - probably overnight or longer, depending on the speed of your computer. 
 
+![screenshot with the Source button highlighted in the R Markdown document in the top-left pane](screens/screen-4.png)
 
