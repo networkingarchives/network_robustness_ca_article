@@ -31,7 +31,7 @@ We include the outputs we generated from the scripts necessary to re-create the 
 
 * Extract the ZIP if necessary.
 
-* Open 'network_robustness_ca_article.Rproj', which should automatically open the project in R-Studio.
+* Navigate to the extracted folder and open 'network_robustness_ca_article.Rproj', which should automatically open the project in R-Studio.
 
 * The bottom-right window pane contains all the files in the repository. If you want to produce the figures with the pre-generated data, open 'robustness_figures.Rmd'.
 
