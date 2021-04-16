@@ -12,7 +12,7 @@ library(furrr)
 
 # Make SPO network from edge list, create include year and folio columns:
 
-spo_raw = read_delim('fromto_all_place_mapped_stuart_sorted', delim = '\t', col_names = F )
+spo_raw = read_delim('/Users/Yann/Documents/MOST RECENT DATA/fromto_all_place_mapped_stuart_sorted', delim = '\t', col_names = F )
 spo_network = spo_raw %>% 
   dplyr::select(X1, X2, X3, X5, X8) %>% 
   mutate(X8 = str_remove(X8, "\\sf\\.[0-9]{1,}")) %>% 
@@ -23,12 +23,12 @@ spo_network = spo_raw %>%
 
 # Make EMLO network. First load full data to extract catalogue info:
 
-work <- read_csv("work.csv", col_types = cols(.default = "c"))
+work <- read_csv("/Users/Yann/Documents/MOST RECENT DATA/EMLO/work.csv", col_types = cols(.default = "c"))
 colnames(work) = to_snake_case(colnames(work))
 
 # Load edge list
 
-emlo_raw = read_delim('emlo_full_network.dat', delim = '\t', col_names = F)
+emlo_raw = read_delim('/Users/Yann/Documents/MOST RECENT DATA/EMLO/emlo_full_network.dat', delim = '\t', col_names = F)
 
 # Load a list of letters to remove (duplicates and some unknowns) from Github repository:
 
@@ -48,7 +48,7 @@ emlo_network = emlo_raw %>%
 
 # Load shelfmark info to join to BCC data:
 
-shelfmarks = read_delim('shelfmarks.txt', delim = '\t')
+shelfmarks = read_delim('/Users/Yann/Documents/MOST RECENT DATA/shelfmarks.txt', delim = '\t')
 
 colnames(shelfmarks) = to_snake_case(colnames(shelfmarks))
 folio_section = shelfmarks %>% filter(str_detect(shelfmark_and_pagination, "fol"))
@@ -95,10 +95,22 @@ spo_node_ids = spo_network %>%
   mutate(node_id = 1:nrow(.)) %>%
   mutate(name = as.numeric(name))
 
+spo_letter_ids = spo_network %>%
+  distinct(letter_id) %>% 
+  mutate(sub_letter_id = paste0("L", 1:nrow(.)))
+
+spo_folio_ids = spo_network %>%
+  distinct(folio_or_catalogue) %>% 
+  filter(!is.na(folio_or_catalogue)) %>% 
+  mutate(sub_folio_id = paste0("F", 1:nrow(.)))
+  
 spo_network = spo_network %>% 
   left_join(spo_node_ids, by = c('X1' = 'name'))%>% 
   left_join(spo_node_ids, by = c('X2' = 'name')) %>% 
-  select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id, folio_or_catalogue)
+  left_join(spo_letter_ids, by = 'letter_id') %>% 
+  left_join(spo_folio_ids, by = 'folio_or_catalogue') %>% 
+  select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id = sub_letter_id, folio_or_catalogue = sub_folio_id)
+
 
 emlo_node_ids = emlo_network %>% 
   graph_from_data_frame() %>% 
@@ -108,10 +120,21 @@ emlo_node_ids = emlo_network %>%
   mutate(node_id = 1:nrow(.)) %>%
   mutate(name = as.numeric(name))
 
+emlo_letter_ids = emlo_network %>%
+  distinct(letter_id) %>% 
+  mutate(sub_letter_id = paste0("L", 1:nrow(.)))
+
+emlo_folio_ids = emlo_network %>%
+  distinct(folio_or_catalogue) %>% 
+  filter(!is.na(folio_or_catalogue)) %>% 
+  mutate(sub_folio_id = paste0("F", 1:nrow(.)))
+
 emlo_network = emlo_network %>% 
-  left_join(emlo_node_ids, by = c('X1' = 'name'))%>% 
+  left_join(emlo_node_ids, by = c('X1' = 'name')) %>% 
   left_join(emlo_node_ids, by = c('X2' = 'name')) %>% 
-  select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id, folio_or_catalogue)
+  left_join(emlo_letter_ids, by = 'letter_id') %>% 
+  left_join(emlo_folio_ids, by = 'folio_or_catalogue') %>% 
+  select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id = sub_letter_id, folio_or_catalogue = sub_folio_id)
 
 bcc_node_ids = bcc_network %>% 
   graph_from_data_frame() %>% 
@@ -121,10 +144,21 @@ bcc_node_ids = bcc_network %>%
   mutate(node_id = 1:nrow(.)) %>%
   mutate(name = as.numeric(name))
 
+bcc_letter_ids = bcc_network %>%
+  distinct(letter_id) %>% 
+  mutate(sub_letter_id = paste0("L", 1:nrow(.)))
+
+bcc_folio_ids = bcc_network %>%
+  distinct(folio_or_catalogue) %>% 
+  filter(!is.na(folio_or_catalogue)) %>% 
+  mutate(sub_folio_id = paste0("F", 1:nrow(.)))
+
 bcc_network = bcc_network %>% 
   left_join(bcc_node_ids, by = c('X1' = 'name'))%>% 
-  left_join(bcc_node_ids, by = c('X2' = 'name')) %>% 
-  select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id, folio_or_catalogue)
+  left_join(bcc_node_ids, by = c('X2' = 'name'))  %>% 
+  left_join(emlo_letter_ids, by = 'letter_id') %>% 
+  left_join(emlo_folio_ids, by = 'folio_or_catalogue') %>% 
+  select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id = sub_letter_id, folio_or_catalogue = sub_folio_id)
 
 save(spo_network, file = 'data/spo_network')
 save(emlo_network, file = 'data/emlo_network')
