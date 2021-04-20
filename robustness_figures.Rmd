@@ -339,7 +339,7 @@ b = samples %>%
   scale_y_continuous(breaks = c(.5, 1))+ 
   theme_bw() +  theme(panel.grid.minor =element_blank(), 
                       strip.text = element_text(size = 11), 
-                      text = element_text(family = 'Times', size = 8)) + 
+                      text = element_text(family = 'Times', size = 8), legend.text = element_text(size = 6)) + 
   facet_wrap(~metric) 
 
 

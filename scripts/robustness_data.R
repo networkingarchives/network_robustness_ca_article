@@ -156,10 +156,15 @@ bcc_folio_ids = bcc_network %>%
 bcc_network = bcc_network %>% 
   left_join(bcc_node_ids, by = c('X1' = 'name'))%>% 
   left_join(bcc_node_ids, by = c('X2' = 'name'))  %>% 
-  left_join(emlo_letter_ids, by = 'letter_id') %>% 
-  left_join(emlo_folio_ids, by = 'folio_or_catalogue') %>% 
+  left_join(bcc_letter_ids, by = 'letter_id') %>% 
+  left_join(bcc_folio_ids, by = 'folio_or_catalogue') %>% 
   select(X1 = node_id.x, X2 = node_id.y, year_date, letter_id = sub_letter_id, folio_or_catalogue = sub_folio_id)
 
 save(spo_network, file = 'data/spo_network')
+spo_network %>% write_delim('spo_network.tsv', delim = '\t')
+
 save(emlo_network, file = 'data/emlo_network')
+emlo_network %>% write_delim('emlo_network.tsv', delim = '\t')
+
 save(bcc_network, file = 'data/bcc_network')
+bcc_network %>% write_delim('bcc_network.tsv', delim = '\t')
