@@ -5,8 +5,8 @@ account: networkingarchives
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2813259
-bundleId: 4385649
+bundleId: 4844932
 url: https://networkingarchives.shinyapps.io/network_robustness_tool/
-when: 1616521488.24043
+when: 1626948219.6812
 asMultiple: FALSE
 asStatic: FALSE
